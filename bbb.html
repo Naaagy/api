@@ -1,0 +1,70 @@
+const baseUrl = "https://vvri.pythonanywhere.com/api";
+
+function getStudents(courseId) {
+    const url = `${baseUrl}/courses/${courseId}/students`;
+    return fetch(url)
+        .then(response => response.json())
+        .catch(error => console.log("Hiba történt: " + error));
+}
+
+function addStudent(courseId, studentData) {
+    const url = `${baseUrl}/courses/${courseId}/students`;
+    return fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(studentData),
+    })
+    .then(response => response.json())
+    .catch(error => console.log("Hiba történt: " + error));
+}
+
+function editStudent(courseId, studentId, newData) {
+    const url = `${baseUrl}/courses/${courseId}/students/${studentId}`;
+    return fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newData),
+    })
+    .then(response => response.json())
+    .catch(error => console.log("Hiba történt: " + error));
+}
+
+function deleteStudent(courseId, studentId) {
+    const url = `${baseUrl}/courses/${courseId}/students/${studentId}`;
+    return fetch(url, {
+        method: 'DELETE',
+    })
+    .then(response => response.json())
+    .catch(error => console.log("Hiba történt: " + error));
+}
+
+const courseId = 'kurzus_id'; 
+const studentData = {
+    name: 'Diák neve',
+    age: 18,
+};
+
+addStudent(courseId, studentData)
+    .then(data => console.log("Hozzáadott diák:", data))
+    .catch(error => console.log("Hiba történt: " + error));
+
+getStudents(courseId)
+    .then(data => console.log("Diákok:", data))
+    .catch(error => console.log("Hiba történt: " + error));
+
+const studentId = 'diák_id'; 
+const newData = {
+    name: 'Módosított név',
+    age: 20,
+};
+editStudent(courseId, studentId, newData)
+    .then(data => console.log("Szerkesztett diák:", data))
+    .catch(error => console.log("Hiba történt: " + error));
+
+deleteStudent(courseId, studentId)
+    .then(data => console.log("Törölt diák:", data))
+    .catch(error => console.log("Hiba történt: " + error));
